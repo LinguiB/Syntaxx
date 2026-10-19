@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Parts of Speech Flashcards</title>
+<title>Parts of Speech: Auxiliaries, Pronouns, Prepositions</title>
 <style>
 :root{--bg:#12102a;--panel:#1d1a40;--ink:#f3efff;--mut:#a7a1cf;--N:#38bdf8;--V:#fb7185;--J:#34d399;--D:#fbbf24;--c:#a78bfa}
 *{box-sizing:border-box}
@@ -52,19 +52,20 @@ nav.bot button.on{color:var(--ink);box-shadow:inset 0 4px 0 var(--D)}
 .opt.ok{border-color:var(--J);background:#12392f}.opt.no{border-color:var(--V);background:#3d1626}
 details.ex{background:var(--panel);border-radius:14px;margin:8px 0;padding:10px 14px}
 details.ex summary{cursor:pointer;font-weight:700}details.ex p{margin:8px 0 0;color:var(--J)}
+ax{color:#a78bfa}pn{color:#f472b6}pp{color:#2dd4bf}ax,pn,pp{font-weight:700;border-bottom:3px solid;padding:0 1px}u{text-decoration:none;border-bottom:3px double var(--D);font-weight:700}
 </style>
 </head>
 <body>
 <main>
-<h1>Parts of Speech: Content Words</h1>
+<h1>Auxiliaries, Pronouns, Prepositions</h1>
 <section class="view on" id="v-home">
-<div class="tree" aria-label="Example syntax tree">[<sub>S</sub> [<sub>NP</sub> the <j>young</j> <n>girl</n>]
-   [<sub>VP</sub> <v>loved</v> [<sub>NP</sub> the <j>old</j> <n>woman</n>]]]</div>
-<div class="legend"><span><n>N</n> noun</span><span><v>V</v> verb</span><span><j>Adj</j> adjective</span><span><d>Adv</d> adverb</span></div>
+<div class="tree" aria-label="Example syntax tree">[<sub>S</sub> [<sub>NP</sub> <pn>she</pn>]
+   [<sub>VP</sub> <ax>has</ax> <v>written</v> [<sub>NP</sub> <pn>it</pn>] [<sub>PP</sub> <pp>to</pp> <pn>him</pn>]]]</div>
+<div class="legend"><span><ax>Aux</ax> auxiliary</span><span><pn>Pro</pn> pronoun</span><span><pp>Prep</pp> preposition</span><span><v>V</v> verb</span><span><n>N</n> noun</span></div>
 <h2>Where do you want to go?</h2>
 <button class="go" style="--c:#a78bfa" onclick="go('study')"><b>📖 Study: notes and rules</b>Read each topic with explanations, examples and rules to remember. Start here if you are confused.</button>
 <button class="go" style="--c:#34d399" onclick="go('cards')"><b>🃏 Flashcards: quick review</b>Flip short cards to memorize rules and examples before a test.</button>
-<button class="go" style="--c:#fb923c" onclick="go('prac')"><b>✏️ Practice: quiz me</b>Multiple-choice quiz and the class exercises, with answers.</button>
+<button class="go" style="--c:#fb923c" onclick="go('prac')"><b>✏️ Practice: quiz me</b>Multiple-choice quiz and the class exercises, with answers. Next in your course: Quiz 3 and Worksheet 8.</button>
 <h2>I’m stuck on…</h2><div id="stuck"></div>
 </section>
 <section class="view" id="v-study"><div class="chips" id="st-tabs"></div><div id="st-body"></div></section>
@@ -86,96 +87,138 @@ details.ex summary{cursor:pointer;font-weight:700}details.ex p{margin:8px 0 0;co
 <button data-v="prac" onclick="go('prac')"><b>✏️</b>Practice</button>
 </nav>
 <script>
-const S={b:['Basics','#a78bfa'],a:['Adjectives','#34d399'],f:['Forming adjectives','#fbbf24'],c:['Word-class changes','#f472b6'],v:['Adverbs','#60a5fa'],m:['Morphology','#2dd4bf']};
+const S={au:['Auxiliary verbs','#a78bfa'],mv:['Verb or auxiliary?','#fbbf24'],pr:['Pronouns','#f472b6'],pt:['Pronoun types','#60a5fa'],pp:['Prepositions','#2dd4bf'],ap:['Adverb or preposition?','#34d399'],tg:['POS tagging','#fb923c']};
 const D=[
-['b',`What are <b>content words</b>?`,`Words that carry the main meaning: <n>N</n>ouns, <v>V</v>erbs, <j>Adj</j>ectives, <d>Adv</d>erbs.<br>Function words (the, in, and, he) mostly do grammar jobs.`],
-['b',`The golden rule of word classes?`,`<b>Job beats form.</b> A word’s class depends on what it does in the sentence, not how it looks.<br><i>fast, hard, first</i> can be <j>Adj</j> or <d>Adv</d>.`],
-['a',`What does an adjective do?`,`It describes (modifies) a <n>noun</n>.<br>the <j>old</j> <n>ticket</n>`],
-['a',`Gradable adjectives`,`They vary in degree: <i>very good, too good, not good enough</i>. They can be compared: good → better → best.<br><b>Test:</b> does “very ___” sound fine?`],
-['a',`Non-gradable adjectives`,`Exact opposites with nothing in between: <i>alive / dead</i>. No comparison. “Very dead” sounds odd.`],
-['a',`Attributive adjective`,`Comes <b>before a noun</b>: <i>an old ticket, a rich man, a young girl</i>.`],
-['a',`Predicative adjective`,`Comes <b>after a (linking) verb</b>: <i>This ticket is old. Ann seems happy. The children were asleep.</i><br>Extra: <i>asleep</i> is normally predicative only.`],
-['a',`Positive, comparative, superlative`,`<i>happy → happier → the happiest</i><br><i>good → better → the best</i> (irregular)<br><i>useful → more useful → the most useful</i>`],
-['a',`Rules for comparing adjectives`,`1. Short adjective: <b>-er / -est</b><br>2. Ends in -y: y → i (<i>happier</i>)<br>3. Long adjective: <b>more / most</b><br>4. Irregular (<i>good, bad</i>): memorize`],
-['f',`Suffixes: -al, -ent, -ive, -ous`,`Make <j>adjectives</j>.<br><b>-al</b> national, professional<br><b>-ent</b> different, dependent<br><b>-ive</b> attractive, effective<br><b>-ous</b> dangerous, famous`],
-['f',`Suffixes: -ful, -less, -able`,`<b>-ful</b> “full of”: beautiful, careful<br><b>-less</b> “without”: homeless, careless<br><b>-able</b> “can be ___ed”: drinkable, countable`],
-['f',`Negative prefixes`,`Make the opposite and <b>keep the class</b> (<j>Adj</j> → <j>Adj</j>).<br><b>un-</b> unjust, uncomfortable<br><b>im- in- ir- il-</b> immature, inconvenient, irreplicable, illegal<br><b>non-</b> non-fiction, nonchalant<br><b>dis-</b> disloyal, dishonest`],
-['f',`Which one: im-, in-, ir-, il-?`,`Match the next sound: <b>im-</b> before b/m/p (<i>impatient</i>), <b>il-</b> before l (<i>illegal</i>), <b>ir-</b> before r (<i>irreplicable</i>), <b>in-</b> otherwise (<i>inconvenient</i>).`],
-['c',`<j>Adj</j> → <n>N</n>: “the young”`,`“The” + adjective = a group or thing.<br><i>The young girl loved the old woman.</i> (adjectives)<br><i>It is difficult for <b>the young</b> to understand <b>the old</b>.</i> (nouns)`],
-['c',`More <j>Adj</j> → <n>N</n> examples`,`<i>The unknown</i> is feared (a thing).<br><i>The Japanese</i> (people, noun) vs <i>Chinese traditions</i> (adjective).<br><i>The white of an egg</i> (noun) vs <i>the yellow part</i> (adjective).`],
-['c',`<n>N</n> → <j>Adj</j>: “silver”`,`<i>made from <b>silver</b></i> = noun (the metal).<br><i>a white and <b>silver</b> dress</i> = adjective.<br><i>Susan looked radiant</i> = predicative adjective.`],
-['c',`<v>V</v> → <j>Adj</j>: swimming pool vs swimming children`,`<b>Swimming pool</b>: the pool is not swimming. It’s a pool <i>for</i> swimming (purpose).<br><b>Swimming children</b>: they <i>are</i> swimming (action).<br><b>Test:</b> “children who are swimming”.`],
-['c',`Purpose compounds with -ing`,`<i>frying pan, sewing machine, living room</i><br>= a pan <i>for</i> frying, a machine <i>for</i> sewing, a room <i>for</i> living.`],
-['c',`-ed vs -ing adjectives`,`<b>-ed</b> = the feeling: <i>The children are bored.</i><br><b>-ing</b> = the cause: <i>The story is boring.</i>`],
-['c',`Adjective or verb: bored / boring?`,`<i>The details <b>bored</b> the children.</i> = verb (past tense)<br><i>The story <b>is boring</b> the children.</i> = verb (progressive)<br><b>Test:</b> adjectives accept “very” (<i>very bored</i>). Verbs don’t.`],
-['v',`The five types of adverb`,`<b>Manner</b> (how): <i>curiously</i><br><b>Place</b> (where): <i>indoors</i><br><b>Time</b> (when): <i>recently</i><br><b>Frequency</b> (how often): <i>usually</i><br><b>Degree</b> (how much): <i>quite</i>`],
-['v',`What can an adverb modify?`,`<v>Verb</v>: He ran <d>fast</d>.<br><j>Adjective</j>: I am <d>really</d> tired.<br><d>Adverb</d>: smoking <d>very</d> heavily.<br><b>Whole clause</b>: <d>Frankly</d>, I am tired.`],
-['v',`Suffixes that form adverbs`,`<b>-ly</b> happily, carefully, quickly<br><b>-wise</b> clockwise, likewise<br><b>-ways</b> sideways, midway<br><b>-ward(s)</b> backward(s), forward(s)<br>Extra: <i>friendly, lovely</i> are adjectives, not adverbs.`],
-['v',`Same form, different job: “fast”`,`<i>She is <b>fast</b>.</i> = <j>Adj</j> (describes <i>she</i>)<br><i>She runs <b>fast</b>.</i> = <d>Adv</d> (describes <i>runs</i>)`],
-['m',`How to break a word down`,`1. Find the <b>root</b>.<br>2. Add affixes one at a time, from the inside out.<br>3. After each one, note the class change.<br><i>institute → institution → institutional → institutionally</i><br>V → N → Adj → Adv`],
-['m',`Break down: <b>optional</b>`,`Root <b>opt</b> + <b>-tion</b> (<v>V</v> → <n>N</n>) + <b>-al</b> (<n>N</n> → <j>Adj</j>)`],
-['m',`Break down: <b>narrative</b>`,`Root <b>narrate</b> + <b>-ive</b>: <v>V</v> → <j>Adj</j>`],
-['m',`Break down: <b>fruitfully</b>`,`Root <b>fruit</b> + <b>-ful</b> + <b>-ly</b>: <n>N</n> → <j>Adj</j> → <d>Adv</d>`],
-['m',`Break down: <b>meaningful</b>`,`Root <b>mean</b> + <b>-ing</b> + <b>-ful</b>: <v>V</v> → <n>N</n> → <j>Adj</j>`],
-['m',`Break down: <b>valuable</b>`,`Root <b>value</b> + <b>-able</b>: <n>N</n> → <j>Adj</j> (the final -e drops)`],
-['m',`Break down: <b>downwards</b>`,`Root <b>down</b> + <b>-ward</b> + <b>-s</b>: ends as an <d>Adv</d>`],
-['m',`Break down: <b>institutionally</b>`,`Root <b>institute</b> + <b>-tion</b> + <b>-al</b> + <b>-ly</b>: <v>V</v> → <n>N</n> → <j>Adj</j> → <d>Adv</d>`]
+['au',`What are auxiliary verbs?`,`<b>Helping verbs</b> that come before a main verb to build questions, negatives and tenses. They add grammar, not the main meaning.<br>He <ax>does</ax> not <v>understand</v> it.<br>Four groups: <b>do, be, have, modals</b>.`],
+['au',`Auxiliary: to do`,`<b>do / does / did</b> help make questions and negatives.<br>He <ax>does</ax> not <v>understand</v> it.<br><ax>Did</ax>n’t he <v>see</v> you?<br>Where <ax>do</ax> you <v>live</v>?`],
+['au',`Auxiliary: to be`,`<b>am / is / are / was / were</b> before a verb ending in -ing.<br>What <ax>are</ax> you <v>laughing</v> at?`],
+['au',`Auxiliary: to have`,`<b>have / has / had</b> before a past participle (<i>written, come</i>).<br>He <ax>has</ax> just <v>come</v>.<br><ax>Have</ax>n’t you <v>written</v> it yet?`],
+['au',`Auxiliary: modals`,`Modals add meaning such as ability or necessity.<br><ax>Can</ax> you <v>do</v> it?<br><ax>Need</ax> she <v>rewrite</v> it?`],
+['au',`The modal verbs`,`<b>can</b> / <b>could</b><br><b>may</b> / <b>might</b><br><b>shall</b> / <b>should</b><br><b>will</b> / <b>would</b><br><b>must</b> / <b>have to, had to</b><br><b>ought to</b> / <b>used to</b><br><b>need</b> / <b>dare</b>`],
+['au',`How to read a verb group`,`The <ax>auxiliary</ax> comes first. The <v>main verb</v> comes last and carries the meaning:<br>does not <b>understand</b>, has just <b>come</b>, are <b>laughing</b>.<br>Extra: auxiliaries move before the subject in questions and join with n’t (<i>didn’t, haven’t</i>).`],
+['mv',`Main verb or auxiliary?`,`<b>Rule:</b> if the verb is the <b>only</b> verb in the clause, it is a <v>main verb</v>. If another verb follows and carries the meaning, it is an <ax>auxiliary</ax>.<br>The same words (<i>do, be, have</i>) can be either.`],
+['mv',`Do you have a brother or a sister?`,`<ax>Do</ax> = auxiliary (makes the question).<br><v>have</v> = main verb (possession).`],
+['mv',`Is he at home? / He is a dentist.`,`<v>is</v> is the <b>only</b> verb, so it is a main verb (linking <i>be</i>).<br>Extra contrast: <i>He <ax>is</ax> <v>working</v></i>, where is is an auxiliary.`],
+['mv',`There are such people.`,`<v>are</v> = main verb. It is the only verb and says that such people exist.`],
+['mv',`I didn’t have enough money to pay the bill.`,`<ax>did</ax>(n’t) = auxiliary<br><v>have</v> = main verb (possession)<br><v>pay</v> = main verb (infinitive)`],
+['mv',`Did you have to wait?`,`<ax>Did</ax> = auxiliary<br><ax>have to</ax> = modal (necessity, on the modal list)<br><v>wait</v> = main verb`],
+['mv',`Do you often have headaches?`,`<ax>Do</ax> = auxiliary, <v>have</v> = main verb. <i>Often</i> sits between them but doesn’t change that.`],
+['pr',`What is a pronoun?`,`A word that <b>replaces</b> a noun or a noun phrase.<br>The fresh graduate is checking the new outfits.<br><pn>She</pn> is checking <pn>them</pn>.`],
+['pr',`What is a noun phrase?`,`A <b>head noun</b> and everything that modifies it: <i>the fresh graduate</i> (head: <n>graduate</n>). A pronoun replaces the <b>whole phrase</b>, not just the noun.`],
+['pr',`Pronoun or not? The replacement test`,`<i>The fresh graduate is checking <b>that</b> bag.</i><br><b>That</b> is <b>not</b> a pronoun here, because the noun <i>bag</i> is not replaced.<br>Compare <i>I like <pn>these</pn>.</i> Nothing follows, so these stands in for a noun.`],
+['pr',`Same word, pronoun or not?`,`<i>All is lost.</i> → <pn>All</pn> is a pronoun.<br><i>She spent all the money.</i> → <b>all</b> is not a pronoun (it modifies <i>money</i>).<br><i>She found her book.</i> → <b>her</b> is not a pronoun (<i>book</i> stays).`],
+['pt',`Subject pronouns`,`<pn>I, you, we, they, he, she, it</pn><br>They do the action or are the topic: <i>She is checking them.</i>`],
+['pt',`Object pronouns`,`<pn>me, you, us, them, him, her, it</pn><br>They receive the action or follow a preposition: <i>checking <b>them</b>; to <b>him</b></i>.`],
+['pt',`Possessive pronouns`,`<pn>mine, yours, ours, theirs, his, hers, its</pn><br><i>He is a friend of <b>mine</b>.</i> They stand alone. Before a noun (<i>my brother</i>) the word is not a pronoun.`],
+['pt',`Reflexive pronouns`,`<pn>myself, yourself, ourselves, themselves, himself, herself, itself</pn><br>They point back to the subject: <i>Richard, you ought to be ashamed of <b>yourself</b>.</i>`],
+['pt',`Relative pronouns`,`<pn>who, which, where, that, whom, when, why</pn><br>They link a clause to a noun: <i>The man <b>who</b> spoke was my brother.</i>`],
+['pt',`Interrogative pronouns`,`<pn>who, which, where, what, whose, when, why</pn><br>They ask questions: <i><b>What</b> is the matter?</i>`],
+['pt',`Relative vs interrogative`,`They share many forms (<i>who, which, where, when, why</i>). <b>The job decides:</b> asking a question = interrogative (<i>Who is it?</i>). Joining a clause to a noun = relative (<i>the man who spoke</i>).`],
+['pt',`Indefinite pronouns`,`Not a specific person or thing.<br><b>-one / -body / -thing:</b> everyone, anyone, someone, everything, anything, something<br><b>Others:</b> any, some, each, all, one, none, many, much, less, few, enough, several, both, either, neither`],
+['pt',`Demonstrative and reciprocal`,`<b>Demonstrative:</b> <pn>this, that</pn> point to something: <i>I like these.</i> (Extra: these, those)<br><b>Reciprocal:</b> <pn>other, another</pn> (Extra: <i>each other, one another</i>)`],
+['pp',`What is a preposition?`,`A word used with a noun, noun phrase, pronoun or gerund to show a <b>relationship</b> between one person, thing or event and another.`],
+['pp',`Four patterns`,`<pp>to</pp> + noun: gave the book to <n>Charlie</n><br>+ noun phrase: to the librarian<br>+ pronoun: to <pn>him</pn> (object form)<br>+ gerund: devotes his time to <v>reading</v>`],
+['pp',`List of prepositions (1)`,`in, at, on, upon, by, beside, before, in front of, behind, beyond, over, under, beneath, below, amidst, among, between, within`],
+['pp',`List of prepositions (2)`,`without, out, outside, around, round, to, from, onto, into, of, during, for, until, after, like<br>Extra: the list is not complete. <i>through, with, near</i> are prepositions too.`],
+['pp',`Prepositions of more than one word`,`<i>in front of</i> is on the list as one preposition. Extra: <i>out of the building</i> works the same way.`],
+['ap',`Adverb or preposition? The rule`,`<b>Preposition:</b> relates a noun, noun phrase, pronoun or gerund (it has an object).<br><b>Adverb</b> of place or time: modifies a verb or clause (nothing follows to complete it).`],
+['ap',`before: adverb or preposition?`,`<i>I have never been here <b>before</b>.</i> → <d>adverb</d> (time, no object)<br><i>I found it <b>before</b> coming here.</i> → <pp>preposition</pp> (+ gerund)`],
+['ap',`outside: adverb or preposition?`,`<i>He was standing <b>outside</b> the building.</i> → <pp>preposition</pp> (+ noun phrase)<br><i>It was raining <b>outside</b>.</i> → <d>adverb</d> (place)`],
+['ap',`The quick test`,`Ask “<b>___ what?</b>” If a noun, pronoun or -ing word answers it, it’s a preposition. If nothing follows, it’s an adverb (<i>coming in, called out</i>).`],
+['tg',`The big picture`,`<b>Content words:</b> <n>N</n> <v>V</v> <j>Adj</j> <d>Adv</d><br><b>This unit:</b> <ax>auxiliaries</ax>, <pn>pronouns</pn>, <pp>prepositions</pp> (Extra: these are function words).`],
+['tg',`What is POS tagging?`,`Labeling every word in a sentence with its part of speech (N, V, adj, adv, prep, pro…). Use the job of the word in <i>this</i> sentence.`],
+['tg',`Tag the Mandela quote`,`The <j>greatest</j> <n>glory</n> <pp>in</pp> <v>living</v> <v>lies</v> <d>not</d> <pp>in</pp> <d>never</d> <v>falling</v>, but <pp>in</pp> <v>rising</v> every <n>time</n> <pn>we</pn> <v>fall</v>.<br>Note the dominant use of verbs.`],
+['tg',`A tagging routine`,`1. Find the verbs.<br>2. Find who or what does them (nouns, pronouns).<br>3. Find describing words (adjectives, adverbs).<br>4. Find prepositions (a word + its noun).<br>Extra: this order is my suggestion, not from the slides.`]
 ];
 const R={
-b:['Content words carry meaning: N, V, Adj, Adv.','Job beats form: check what the word does in <i>this</i> sentence.'],
-a:['Before a noun = attributive. After a linking verb = predicative.','If “very ___” works, it is gradable.','Short: -er / -est. Long: more / most. Irregular: memorize.'],
-f:['A suffix usually changes the class. A prefix keeps it.','im- before b/m/p, il- before l, ir- before r, in- otherwise.','-ful = full of, -less = without, -able = can be ___ed.'],
-c:['the + adjective = a group (<i>the young</i>).','-ing form: action now, or purpose?','-ed = the feeling, -ing = the cause. “Very” works only on adjectives.'],
-v:['Adverbs answer: how, where, when, how often, how much.','They can modify a verb, adjective, adverb or whole clause.','-ly is a clue, not proof: <i>friendly</i> is an adjective.','Same form? Ask what it modifies (<i>fast, hard, first</i>).'],
-m:['Find the root first, then add one affix at a time.','After each affix, write the new class (V → N → Adj → Adv).','Spelling can change: value → valuable (the -e drops).']};
+au:['Auxiliary + main verb: the main verb comes last.','Four groups: do, be, have, modals.','Modals are followed by a base verb: <i>Can you do it?</i>'],
+mv:['Only one verb in the clause? It’s a main verb.','Another verb carries the meaning? The first one is an auxiliary.','<i>have to</i> counts as a modal.'],
+pr:['A pronoun replaces a whole noun phrase.','If the noun is still there, it’s not a pronoun (<i>her book</i>).','The same word can be a pronoun or not (<i>all</i>).'],
+pt:['Subject: I, he, she. Object: me, him, her.','Possessive pronouns stand alone: <i>mine</i>.','Reflexive = -self / -selves.','Who, which, where… can be relative or interrogative: check the job.'],
+pp:['Preposition + noun / noun phrase / pronoun / gerund.','After a preposition, use object pronouns: <i>to him</i>.','The slide list is not complete.'],
+ap:['Object follows? Preposition.','Nothing follows? Adverb.','Same word, different job: <i>before, outside</i>.'],
+tg:['Tag by job in the sentence.','Find the verbs first.','Content words and function words both get tags.']};
 const QZ=[
-['b','In “She runs fast”, <i>fast</i> is…',['an adjective','an adverb','a noun','a verb'],1,'It tells how she runs, so it modifies a verb.'],
-['b','In “She is fast”, <i>fast</i> is…',['an adjective','an adverb','a noun','a verb'],0,'It describes <i>she</i> after a linking verb: a predicative adjective.'],
-['b','In “I work hard”, <i>hard</i> is…',['an adjective','an adverb'],1,'It tells how I work. In “hard work” it is an adjective.'],
-['a','Which adjective is non-gradable?',['happy','alive','tall','useful'],1,'Alive / dead are exact opposites with nothing in between.'],
-['a','The superlative of <i>useful</i> is…',['usefullest','more useful','the most useful','usefuller'],2,'Long adjectives take more / most.'],
-['a','“The children were asleep.” <i>Asleep</i> is…',['attributive','predicative'],1,'It comes after the verb <i>were</i>.'],
-['f','The suffix <i>-less</i> means…',['full of','without','can be done','relating to'],1,'Homeless = without a home.'],
-['f','Which negative prefix goes with <i>legal</i>?',['un-','im-','il-','ir-'],2,'il- before l.'],
-['f','Which word is an adjective, not an adverb?',['quickly','friendly','happily','carefully'],1,'Not every -ly word is an adverb.'],
-['c','In “difficult for the young to understand the old”, <i>the old</i> is…',['an adjective before a noun','a noun made from an adjective','a verb','an adverb'],1,'the + adjective = a group of people.'],
-['c','“He waved to the swimming children.” <i>Swimming</i> shows…',['an action the children do','a purpose, like swimming pool'],0,'The children are swimming.'],
-['c','In <i>frying pan</i>, <i>frying</i> shows…',['an action happening now','the purpose: a pan for frying'],1,'Purpose compound, like sewing machine.'],
-['c','“The story is boring.” The story…',['feels bored','causes boredom'],1,'-ing = cause. -ed = feeling.'],
-['c','In “a white and silver dress”, <i>silver</i> is…',['a noun','an adjective','a verb','an adverb'],1,'It describes the dress. In “made from silver” it is a noun.'],
-['v','In “Frankly, I am tired”, <i>frankly</i> modifies…',['the verb am','the adjective tired','the whole clause','a noun'],2,'A sentence adverb.'],
-['v','<i>Recently</i> is an adverb of…',['manner','place','time','degree'],2,'It answers “when?”'],
-['v','<i>Quite</i> in “quite good” is an adverb of…',['frequency','degree','time','manner'],1,'It answers “how much?”'],
-['m','The root of <i>institutionally</i> is…',['institution','institute','institutional','institut'],1,'institute + -tion + -al + -ly']];
+['au','In “He does not understand it”, the auxiliary is…',['does','not','understand','it'],0,'<i>does</i> helps the main verb <i>understand</i>.'],
+['au','In “What are you laughing at?”, the auxiliary is…',['are','laughing','at','What'],0,'<i>are</i> + <i>laughing</i> (be + -ing).'],
+['au','In “He has just come”, <i>has</i> is a form of…',['to do','to be','to have','a modal'],2,'have / has / had + past participle.'],
+['au','Which of these is a modal verb?',['write','might','laugh','understand'],1,'<i>might</i> is on the modal list.'],
+['au','Which is NOT on the modal list?',['ought to','dare','must','walk'],3,'<i>walk</i> is an ordinary verb.'],
+['mv','In “He is a dentist”, <i>is</i> is…',['an auxiliary','a main verb'],1,'It is the only verb in the clause.'],
+['mv','In “Do you have a brother?”, <i>have</i> is…',['an auxiliary','a main verb'],1,'<i>Do</i> is the auxiliary. <i>have</i> carries the meaning.'],
+['mv','In “Did you have to wait?”, <i>have to</i> is…',['a main verb','a modal','a noun','a preposition'],1,'<i>have to</i> is on the modal list. <i>wait</i> is the main verb.'],
+['pr','In “She is checking them”, <i>them</i> stands for…',['the fresh graduate','the new outfits','is checking','she'],1,'It replaces the whole noun phrase <i>the new outfits</i>.'],
+['pr','In “She found her book”, <i>her</i> is…',['a pronoun','not a pronoun, because book is not replaced'],1,'<i>her</i> modifies <i>book</i>.'],
+['pr','In “All is lost”, <i>all</i> is…',['a pronoun','an adjective','a preposition','an auxiliary'],0,'Nothing follows it, so it stands in for a noun.'],
+['pt','Which is a reflexive pronoun?',['mine','yourself','who','this'],1,'Reflexives end in -self / -selves.'],
+['pt','In “He is a friend of mine”, <i>mine</i> is…',['subject','object','possessive','reflexive'],2,'Possessive pronouns stand alone.'],
+['pt','In “The man who spoke was my brother”, <i>who</i> is…',['interrogative','relative','reflexive','demonstrative'],1,'It joins a clause to the noun <i>man</i>.'],
+['pt','In “What is the matter?”, <i>what</i> is…',['relative','interrogative','indefinite','reciprocal'],1,'It asks a question.'],
+['pt','Which is an indefinite pronoun?',['someone','themselves','whom','these'],0,'It names no specific person.'],
+['pp','In “We slept until midnight”, the preposition is…',['slept','until','midnight','We'],1,'<i>until</i> + <i>midnight</i>.'],
+['pp','In “I gave it to him”, <i>him</i> is…',['a subject pronoun','an object pronoun after a preposition'],1,'After a preposition we use the object form.'],
+['ap','In “It was raining outside”, <i>outside</i> is…',['a preposition','an adverb'],1,'No noun follows. It tells where.'],
+['ap','In “I found it before coming here”, <i>before</i> is…',['a preposition','an adverb'],0,'It is followed by the gerund <i>coming</i>.'],
+['tg','In Mandela’s quote, <i>in</i> (“in living”) is…',['an adverb','a preposition','a pronoun','a noun'],1,'<i>in</i> + gerund <i>living</i>.'],
+['tg','In the quote, <i>we</i> is…',['a noun','a pronoun','a verb','an adverb'],1,'It replaces a noun phrase.']];
+const PW='<i>The Wolf did not take long to reach the grandmother’s house. He knocked at the door, rat-a-tat-tat! ‘Who is it?’ ‘It’s me, your granddaughter, Little Red Riding-Hood,’ said the Wolf, imitating the little girl’s voice, ‘and I’ve brought you a bun and a little pot of butter that Mummy has sent.’ The kind grandmother, who was in bed because she was not feeling very well, called out: ‘Draw the peg back, and the bar will fall.’</i>';
+const PP='<i>The Wolf drew the peg back and the door opened quickly. He flung himself on the old lady, and ate her all up in less than a moment, because he had not had a meal for more than three days. Then he shut the door quietly, went to lie down in the grandmother’s bed, and waited for Little Red Riding-Hood. In a little while she came, and knocked on the door, rat-a-tat-tat! ‘Who is it?’ Little Red Riding-Hood, hearing the Wolf’s gruff voice, was frightened at first, but, believing that her grandmother had a cold, she sweetly answered: ‘It’s me, your granddaughter, Little Red Riding-Hood, and I’ve brought you a bun and a little pot of butter that Mummy has sent.’</i>';
+const PR='<i>Making his voice a little softer, the Wolf called out: ‘Draw the peg back, and the bar will fall.’ Little Red Riding-Hood drew the peg back and the door opened. When he saw her coming in, the Wolf hid under the bedclothes, and said: ‘Put the bun and the little pot of butter on the chest, and come and sit with me.’ Little Red Riding-Hood got near the bed, where she was very surprised to see what her grandmother looked like, and she said:</i>';
 const EX=[
-['Fill in the adjective','Make an adjective from the word in brackets.',[
-['The politician is ____ to Parliament and the public. (account)','<b>accountable</b> (-able)'],
-['He’s an island of extreme structure in a ____ world. (structure)','<b>structureless</b> (-less)'],
-['I think I’ve got one of the most ____ jobs there is. (stress)','<b>stressful</b> (-ful)'],
-['He found it ____ to arrive early. (advantage)','<b>advantageous</b> (-ous)'],
-['He found it ____ to arrive early. (benefit)','<b>beneficial</b>'],
-['The conference aimed at proposing ____ solutions to environmental problems. (effect)','<b>effective</b> (-ive)'],
-['The new head of state should be chosen by an 87-member ____ council. (represent)','<b>representative</b> (-ive)']]],
-['Find the adjectives and adverbs','<i>‘Does she live a long way off?’ asked the Wolf. ‘Oh yes,’ said Little Red Riding-Hood, ‘it’s beyond the mill that you can see ever so far away over there, and it’s the first house you come to in the village.’ ‘Well then,’ said the Wolf, ‘I’d like to go and see her too. I’ll go by this path here, and you go by that one, and we’ll see who gets there first.’ The Wolf began to run as hard as he could along his path, which was shorter, while the little girl went by the longer path, and amused herself gathering hazel-nuts, running after butterflies, and making bouquets out of the flowers that she saw.</i>',[
-['Find the adjectives','<j>long</j>, <j>first</j> (the first house), <j>little</j>, <j>shorter</j>, <j>longer</j>. Careful: “gets there <b>first</b>” is an adverb.'],
-['Find the adverbs','<d>off, ever, so, far, away, over there, then, too, here, first, hard</d>. “Yes” and “well” are usually interjections or discourse markers.']]],
-['Tag the content words','Label each content word: N, V, Adj or Adv.',[
-['I work hard because I enjoy hard work.','I <v>work</v> <d>hard</d> because I <v>enjoy</v> <j>hard</j> <n>work</n>.'],
-['If it’s urgent, you should send it by express mail.','<j>urgent</j>, <v>send</v>, <j>express</j>, <n>mail</n>'],
-['The path was so narrow we had to walk sideways.','<n>path</n>, <j>narrow</j>, <v>walk</v>, <d>sideways</d>'],
-['Sometimes we get a lot of rain in September.','<d>Sometimes</d>, <v>get</v>, <n>rain</n>, <n>September</n>'],
-['You should always speak naturally.','<d>always</d>, <v>speak</v>, <d>naturally</d>'],
-['You can always judge a society by the way the old are cared for.','<d>always</d>, <v>judge</v>, <n>society</n>, <n>way</n>, <n>the old</n>, <v>cared for</v>'],
-['Houses are very expensive these days.','<n>Houses</n>, <d>very</d>, <j>expensive</j>, <n>days</n>. Linking and auxiliary verbs (<i>are</i>) are often counted as function words.']]],
-['Break down the word','Root, affixes, and the class change at each step.',[
-['optional','<b>opt</b> + -tion + -al: V → N → Adj'],['narrative','<b>narrate</b> + -ive: V → Adj'],['fruitfully','<b>fruit</b> + -ful + -ly: N → Adj → Adv'],
-['meaningful','<b>mean</b> + -ing + -ful: V → N → Adj'],['valuable','<b>value</b> + -able: N → Adj'],['downwards','<b>down</b> + -ward + -s: Adv'],
-['institutionally','<b>institute</b> + -tion + -al + -ly: V → N → Adj → Adv']]]];
-const STUCK=[['Telling adjectives from adverbs','study','v'],['Words that change class (the old, swimming pool, bored / boring)','study','c'],['Building adjectives with suffixes and prefixes','study','f'],['Breaking a word into root + affixes','study','m'],['A quick refresher before a test','cards','all'],['Testing myself','prac','quiz'],['Class exercises with answers','prac','ex']];
+['Main verb or auxiliary?','Find the auxiliary (if any) and the main verb in each sentence.',[
+['Do you have a brother or a sister?','<ax>Do</ax> = auxiliary, <v>have</v> = main verb'],
+['Is he at home?','<v>Is</v> = main verb (only verb)'],
+['There are such people.','<v>are</v> = main verb'],
+['He is a dentist.','<v>is</v> = main verb'],
+['I didn’t have enough money to pay the bill.','<ax>did</ax>(n’t) = auxiliary, <v>have</v> and <v>pay</v> = main verbs'],
+['Did you have to wait?','<ax>Did</ax> = auxiliary, <ax>have to</ax> = modal, <v>wait</v> = main verb'],
+['Do you often have headaches?','<ax>Do</ax> = auxiliary, <v>have</v> = main verb']]],
+['Find the auxiliaries and the verbs',PW,[
+['Sentence 1: The Wolf did not take long to reach the grandmother’s house. He knocked at the door.','<ax>did</ax> not <v>take</v>, <v>reach</v>, <v>knocked</v>'],
+['‘Who is it?’ ‘It’s me…’ said the Wolf, imitating the little girl’s voice','<v>is</v> (only verb), <v>’s</v> = is, <v>said</v>, <v>imitating</v>'],
+['‘…I’ve brought you a bun and a little pot of butter that Mummy has sent.’','<ax>’ve</ax> (have) <v>brought</v>; <ax>has</ax> <v>sent</v>'],
+['The kind grandmother, who was in bed because she was not feeling very well, called out:','<v>was</v> (main verb: only verb); <ax>was</ax> not <v>feeling</v>; <v>called</v>'],
+['‘Draw the peg back, and the bar will fall.’','<v>Draw</v>; <ax>will</ax> (modal) <v>fall</v>. Extra: <i>rat-a-tat-tat</i> is not a verb.']]],
+['Tag the pronouns','Find every pronoun. Some look like pronouns but are not.',[
+['That’s her.','<pn>That</pn> (demonstrative), <pn>her</pn> (object)'],
+['Richard, you ought to be ashamed of yourself.','<pn>you</pn> (subject), <pn>yourself</pn> (reflexive)'],
+['You can never hear what he’s saying.','<pn>You</pn>, <pn>what</pn> (interrogative), <pn>he</pn>'],
+['She found her book.','<pn>She</pn>. <b>her</b> is not a pronoun (book is not replaced).'],
+['He is a friend of mine.','<pn>He</pn>, <pn>mine</pn> (possessive)'],
+['The man who spoke was my brother.','<pn>who</pn> (relative). <b>my</b> is not a pronoun.'],
+['He invited us to dinner, which was very kind of him.','<pn>He</pn>, <pn>us</pn>, <pn>which</pn> (relative), <pn>him</pn>'],
+['What is the matter?','<pn>What</pn> (interrogative)'],
+['I like these.','<pn>I</pn>, <pn>these</pn> (demonstrative)'],
+['All is lost.','<pn>All</pn> (indefinite)'],
+['She spent all the money.','<pn>She</pn>. <b>all</b> is not a pronoun (it modifies money).']]],
+['Find the pronouns',PP,[
+['Find the pronouns in the passage','<pn>He</pn>, <pn>himself</pn>, <pn>her</pn> (ate her), <pn>he</pn>, <pn>he</pn>, <pn>she</pn>, <pn>Who</pn>, <pn>it</pn>, <pn>she</pn>, <pn>It</pn>, <pn>me</pn>, <pn>I</pn>, <pn>you</pn> (brought you), <pn>that</pn> (relative). <b>her grandmother</b> and <b>your granddaughter</b> are not pronouns.'],
+['Cartoon “Not Your Cheese”: find all the pronouns','<pn>You</pn>, <pn>I</pn>, <pn>What</pn>, <pn>you</pn>, <pn>that</pn>, <pn>you</pn>, <pn>I</pn>, <pn>What</pn>, <pn>it</pn>, <pn>I</pn>, <pn>it</pn>. <b>your cheese</b> is not a pronoun.']]],
+['Tag the prepositions','Find the preposition in each sentence.',[
+['A bird flew into my bedroom this morning.','<pp>into</pp>'],
+['I waited in the hotel lobby.','<pp>in</pp>'],
+['We ran out of the building.','<pp>out of</pp>'],
+['He became ill during the night.','<pp>during</pp>'],
+['We slept until midnight.','<pp>until</pp>'],
+['At what time do you arrive?','<pp>At</pp>'],
+['The army swept through the city like a pestilence.','<pp>through</pp> (not on the slide list), <pp>like</pp>'],
+['I’m so glad you’re coming with us.','<pp>with</pp> (not on the slide list)'],
+['He’ll do anything for money.','<pp>for</pp>']]],
+['Find the prepositions',PR,[
+['Find the prepositions in the passage','<pp>of</pp> (pot of butter), <pp>under</pp> (the bedclothes), <pp>on</pp> (the chest), <pp>with</pp> (me), <pp>near</pp> (the bed), <pp>like</pp> (looked like). <b>coming in</b> and <b>called out</b>: <d>adverbs</d>, nothing follows.'],
+['Cartoon “Trash Time”: find the preposition','“Why did you throw your wristwatch <pp>into</pp> the garbage can?”']]],
+['Adverb or preposition?','Decide which one each underlined word is.',[
+['I have never been here <u>before</u>.','<d>adverb</d> (time, no object)'],
+['I found it <u>before</u> coming here.','<pp>preposition</pp> (+ gerund)'],
+['He was standing <u>outside</u> the building.','<pp>preposition</pp> (+ noun phrase)'],
+['It was raining <u>outside</u>.','<d>adverb</d> (place)']]],
+['POS tagging','Tag every word class you know.',[
+['The greatest glory in living lies not in never falling, but in rising every time we fall.','<j>greatest</j> adj, <n>glory</n> N, <pp>in</pp> prep, <v>living</v> V, <v>lies</v> V, <d>not</d> adv, <pp>in</pp> prep, <d>never</d> adv, <v>falling</v> V, <pp>in</pp> prep, <v>rising</v> V, <n>time</n> N, <pn>we</pn> pro, <v>fall</v> V. (Nelson Mandela)']]]];
+const STUCK=[['Is it a main verb or an auxiliary?','study','mv'],['Which type of pronoun is it?','study','pt'],['Pronoun, or just a word before a noun?','study','pr'],['Adverb or preposition?','study','ap'],['The list of modal verbs','cards','au'],['A quick refresher before a test','cards','all'],['Testing myself','prac','quiz'],['Class exercises with answers','prac','ex']];
 const $=id=>document.getElementById(id);
 const cards=D.map((c,id)=>({id,s:c[0],q:c[1],a:c[2]}));
 const topics=Object.entries(S).map(([k,[n,c]])=>[k,n,c]);
-let stT='b',cdT='all',pr='quiz';
+let stT='au',cdT='all',pr='quiz';
 function tabs(el,items,cur,pick){el.innerHTML='';items.forEach(([k,n,col])=>{const b=document.createElement('button');b.className='chip'+(k==cur?' on':'');b.style.setProperty('--c',col);b.textContent=n;b.onclick=()=>pick(k);el.appendChild(b)})}
 let view='home';
 function go(v,t){view=v;if(t){if(v=='study')stT=t;if(v=='cards'){cdT=t;i=0}if(v=='prac')pr=t}
