@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parts of Speech Flashcards</title>
+<style>
+:root{--bg:#12102a;--panel:#1d1a40;--ink:#f3efff;--mut:#a7a1cf;--N:#38bdf8;--V:#fb7185;--J:#34d399;--D:#fbbf24;--c:#a78bfa}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% 0,#2a2260 0,transparent 45%),radial-gradient(circle at 90% 100%,#0f3b4d 0,transparent 40%),var(--bg);color:var(--ink);font:17px/1.55 Georgia,'Times New Roman',serif;padding:18px 14px 40px}
+main{max-width:620px;margin:auto}
+h1{font-size:clamp(26px,7vw,38px);margin:4px 0 2px;letter-spacing:.2px}
+.tree{font:14px/1.7 ui-monospace,Menlo,monospace;color:var(--mut);background:#0d0b20;border:1px dashed #3b3580;border-radius:14px;padding:10px 12px;overflow-x:auto;white-space:nowrap;margin:10px 0}
+.tree sub{font-size:11px;color:#8d86c9}
+n,v,j,d{font-weight:700;border-bottom:3px solid;padding:0 1px}
+n{color:var(--N)}v{color:var(--V)}j{color:var(--J)}d{color:var(--D)}
+.legend{display:flex;gap:8px;flex-wrap:wrap;font-size:14px;margin-bottom:12px}
+.legend span{background:var(--panel);border-radius:99px;padding:2px 12px}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
+.chip{border:2px solid var(--c);background:transparent;color:var(--ink);border-radius:99px;padding:5px 13px;font:inherit;font-size:14px;cursor:pointer}
+.chip.on{background:var(--c);color:#12102a;font-weight:700}
+.bar{height:8px;background:#0d0b20;border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--N),var(--J),var(--D),var(--V));transition:width .4s}
+.meta{display:flex;justify-content:space-between;color:var(--mut);font-size:14px;margin:6px 2px 12px}
+.card{position:relative;min-height:330px;background:linear-gradient(160deg,#272256,var(--panel));border:2px solid var(--c);border-radius:26px 26px 26px 6px;padding:26px 22px 38px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;transition:transform .16s ease-in;box-shadow:0 10px 34px #0008;user-select:none}
+.card.fl{transform:rotateY(90deg)}
+.lab{position:absolute;top:10px;left:16px;font:13px ui-monospace,Menlo,monospace;color:var(--c)}
+.hint{position:absolute;bottom:10px;right:18px;font-size:13px;color:var(--mut)}
+.txt{font-size:19px}
+.txt.q{font-size:23px;text-align:center;font-weight:700}
+.txt b{color:var(--c)}
+.row{display:flex;gap:8px;margin-top:14px}
+button.b{flex:1;padding:13px 6px;border-radius:14px;border:2px solid #4b43a0;background:var(--panel);color:var(--ink);font:inherit;font-size:16px;cursor:pointer}
+button.b:hover,.chip:hover{filter:brightness(1.25)}
+button.g{border-color:var(--J)}button.r{border-color:var(--V)}
+button:focus-visible,.card:focus-visible{outline:3px solid var(--D);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.card,.bar i{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<h1>Parts of Speech: Content Words</h1>
+<div class="tree" aria-label="Example syntax tree">[<sub>S</sub> [<sub>NP</sub> the <j>young</j> <n>girl</n>] [<sub>VP</sub> <v>loved</v> [<sub>NP</sub> the <j>old</j> <n>woman</n>]]] <d>quickly</d></div>
+<div class="legend"><span><n>N</n> noun</span><span><v>V</v> verb</span><span><j>Adj</j> adjective</span><span><d>Adv</d> adverb</span></div>
+<div class="chips" id="chips"></div>
+<div class="bar"><i id="pb"></i></div>
+<div class="meta"><span id="cnt"></span><span id="kn"></span></div>
+<div class="card" id="card" tabindex="0" role="button" aria-label="Flashcard. Press to flip."><span class="lab" id="lab"></span><div class="txt q" id="txt"></div><span class="hint" id="hint">tap to flip</span></div>
+<div class="row"><button class="b" id="prev">◀ Back</button><button class="b" id="shuf">Shuffle</button><button class="b" id="next">Next ▶</button></div>
+<div class="row"><button class="b r" id="again">Again</button><button class="b g" id="got">Got it</button></div>
+<div class="row"><button class="b" id="reset">Reset progress</button></div>
+</main>
+<script>
+const S={b:['Basics','#a78bfa'],a:['Adjectives','#34d399'],f:['Forming','#fbbf24'],c:['Conversion','#f472b6'],v:['Adverbs','#60a5fa'],p:['Practice','#fb923c'],m:['Morphology','#2dd4bf']};
+const D=[
+['b',`What are <b>content words</b>?`,`Words that carry the main meaning: <n>N</n>ouns, <v>V</v>erbs, <j>Adj</j>ectives, <d>Adv</d>erbs.<br>Function words (the, in, and, he) mostly do grammar jobs.`],
+['b',`The golden rule of word classes?`,`<b>Job beats form.</b> A word’s class depends on what it does in the sentence, not how it looks.<br><i>fast, hard, first</i> can be <j>Adj</j> or <d>Adv</d>.`],
+['a',`What does an adjective do?`,`It describes (modifies) a <n>noun</n>.<br>the <j>old</j> <n>ticket</n>`],
+['a',`Gradable adjectives`,`They vary in degree: <i>very good, too good, not good enough</i>. They can be compared: good → better → best.<br><b>Test:</b> does “very ___” sound fine?`],
+['a',`Non-gradable adjectives`,`Exact opposites with nothing in between: <i>alive / dead</i>. No comparison. “Very dead” sounds odd.`],
+['a',`Attributive adjective`,`Comes <b>before a noun</b>: <i>an old ticket, a rich man, a young girl</i>.`],
+['a',`Predicative adjective`,`Comes <b>after a (linking) verb</b>: <i>This ticket is old. Ann seems happy. The children were asleep.</i><br>Extra: <i>asleep</i> is normally predicative only.`],
+['a',`Positive, comparative, superlative`,`<i>happy → happier → the happiest</i><br><i>good → better → the best</i> (irregular)<br><i>useful → more useful → the most useful</i>`],
+['a',`Rules for comparing adjectives`,`1. Short adjective: <b>-er / -est</b><br>2. Ends in -y: y → i (<i>happier</i>)<br>3. Long adjective: <b>more / most</b><br>4. Irregular (<i>good, bad</i>): memorize`],
+['f',`Suffixes: -al, -ent, -ive, -ous`,`Make <j>adjectives</j>.<br><b>-al</b> national, professional<br><b>-ent</b> different, dependent<br><b>-ive</b> attractive, effective<br><b>-ous</b> dangerous, famous`],
+['f',`Suffixes: -ful, -less, -able`,`<b>-ful</b> “full of”: beautiful, careful<br><b>-less</b> “without”: homeless, careless<br><b>-able</b> “can be ___ed”: drinkable, countable`],
+['f',`Negative prefixes`,`Make the opposite and <b>keep the class</b> (<j>Adj</j> → <j>Adj</j>).<br><b>un-</b> unjust, uncomfortable<br><b>im- in- ir- il-</b> immature, inconvenient, irreplicable, illegal<br><b>non-</b> non-fiction, nonchalant<br><b>dis-</b> disloyal, dishonest`],
+['f',`Which one: im-, in-, ir-, il-?`,`Match the next sound: <b>im-</b> before b/m/p (<i>impatient</i>), <b>il-</b> before l (<i>illegal</i>), <b>ir-</b> before r (<i>irreplicable</i>), <b>in-</b> otherwise (<i>inconvenient</i>).`],
+['c',`<j>Adj</j> → <n>N</n>: “the young”`,`“The” + adjective = a group or thing.<br><i>The young girl loved the old woman.</i> (adjectives)<br><i>It is difficult for <b>the young</b> to understand <b>the old</b>.</i> (nouns)`],
+['c',`More <j>Adj</j> → <n>N</n> examples`,`<i>The unknown</i> is feared (a thing).<br><i>The Japanese</i> (people, noun) vs <i>Chinese traditions</i> (adjective).<br><i>The white of an egg</i> (noun) vs <i>the yellow part</i> (adjective).`],
+['c',`<n>N</n> → <j>Adj</j>: “silver”`,`<i>made from <b>silver</b></i> = noun (the metal).<br><i>a white and <b>silver</b> dress</i> = adjective.<br><i>Susan looked radiant</i> = predicative adjective.`],
+['c',`<v>V</v> → <j>Adj</j>: swimming pool vs swimming children`,`<b>Swimming pool</b>: the pool is not swimming. It’s a pool <i>for</i> swimming (purpose).<br><b>Swimming children</b>: they <i>are</i> swimming (action).<br><b>Test:</b> “children who are swimming”.`],
+['c',`Purpose compounds with -ing`,`<i>frying pan, sewing machine, living room</i><br>= a pan <i>for</i> frying, a machine <i>for</i> sewing, a room <i>for</i> living.`],
+['c',`-ed vs -ing adjectives`,`<b>-ed</b> = the feeling: <i>The children are bored.</i><br><b>-ing</b> = the cause: <i>The story is boring.</i>`],
+['c',`Adjective or verb: bored / boring?`,`<i>The details <b>bored</b> the children.</i> = verb (past tense)<br><i>The story <b>is boring</b> the children.</i> = verb (progressive)<br><b>Test:</b> adjectives accept “very” (<i>very bored</i>). Verbs don’t.`],
+['v',`The five types of adverb`,`<b>Manner</b> (how): <i>curiously</i><br><b>Place</b> (where): <i>indoors</i><br><b>Time</b> (when): <i>recently</i><br><b>Frequency</b> (how often): <i>usually</i><br><b>Degree</b> (how much): <i>quite</i>`],
+['v',`What can an adverb modify?`,`<v>Verb</v>: He ran <d>fast</d>.<br><j>Adjective</j>: I am <d>really</d> tired.<br><d>Adverb</d>: smoking <d>very</d> heavily.<br><b>Whole clause</b>: <d>Frankly</d>, I am tired.`],
+['v',`Suffixes that form adverbs`,`<b>-ly</b> happily, carefully, quickly<br><b>-wise</b> clockwise, likewise<br><b>-ways</b> sideways, midway<br><b>-ward(s)</b> backward(s), forward(s)<br>Extra: <i>friendly, lovely</i> are adjectives, not adverbs.`],
+['v',`Same form, different job: “fast”`,`<i>She is <b>fast</b>.</i> = <j>Adj</j> (describes <i>she</i>)<br><i>She runs <b>fast</b>.</i> = <d>Adv</d> (describes <i>runs</i>)`],
+['p',`Fill in with an adjective (1 to 3)`,`1. account → <b>accountable</b> (-able)<br>2. structure → <b>structureless</b> (-less)<br>3. stress → <b>stressful</b> (-ful). The slide note says only “stress”, probably a typo.`],
+['p',`Fill in with an adjective (4 to 7)`,`4. advantage → <b>advantageous</b><br>5. benefit → <b>beneficial</b><br>6. effect → <b>effective</b><br>7. represent → <b>representative</b>`],
+['p',`Cartoons: find the word`,`<i>Duck Soup</i>: <j>delicious</j> (adjective describing the soup).<br><i>Moon Food</i>: <d>recently</d> (adverb saying when Chuck ate).`],
+['p',`Find the adjectives: Red Riding Hood`,`<j>long</j> (a long way), <j>first</j> (the first house), <j>little</j> girl, <j>shorter</j>, <j>longer</j>.<br>Careful: “who gets there <b>first</b>” = <d>adverb</d>. <i>Hazel-nuts</i> is a compound noun.`],
+['p',`Find the adverbs: Red Riding Hood`,`<d>off, ever, so, far, away, over there, then, too, here, first, hard</d><br>“Yes” and “well” are usually interjections or discourse markers. Check how your instructor counts them.`],
+['p',`Tag: I work hard because I enjoy hard work.`,`I <v>work</v> <d>hard</d> because I <v>enjoy</v> <j>hard</j> <n>work</n>.`],
+['p',`Tag the content words: set 1`,`If it’s <j>urgent</j>, you should <v>send</v> it by <j>express</j> <n>mail</n>.<br>The <n>path</n> was so <j>narrow</j> we had to <v>walk</v> <d>sideways</d>.<br><d>Sometimes</d> we <v>get</v> a lot of <n>rain</n> in <n>September</n>.`],
+['p',`Tag the content words: set 2`,`You should <d>always</d> <v>speak</v> <d>naturally</d>.<br>You can <d>always</d> <v>judge</v> a <n>society</n> by the <n>way</n> <n>the old</n> are <v>cared for</v>.<br><n>Houses</n> are <d>very</d> <j>expensive</j> these <n>days</n>.<br>Linking and auxiliary verbs (<i>are, should, can</i>) are often counted as function words.`],
+['m',`Break down: <b>optional</b>`,`Root <b>opt</b> + <b>-tion</b> (<v>V</v> → <n>N</n>) + <b>-al</b> (<n>N</n> → <j>Adj</j>)`],
+['m',`Break down: <b>narrative</b>`,`Root <b>narrate</b> + <b>-ive</b>: <v>V</v> → <j>Adj</j>`],
+['m',`Break down: <b>fruitfully</b>`,`Root <b>fruit</b> + <b>-ful</b> + <b>-ly</b>: <n>N</n> → <j>Adj</j> → <d>Adv</d>`],
+['m',`Break down: <b>meaningful</b>`,`Root <b>mean</b> + <b>-ing</b> + <b>-ful</b>: <v>V</v> → <n>N</n> → <j>Adj</j>`],
+['m',`Break down: <b>valuable</b>`,`Root <b>value</b> + <b>-able</b>: <n>N</n> → <j>Adj</j> (the final -e drops)`],
+['m',`Break down: <b>downwards</b>`,`Root <b>down</b> + <b>-ward</b> + <b>-s</b>: ends as an <d>Adv</d>`],
+['m',`Break down: <b>institutionally</b>`,`Root <b>institute</b> + <b>-tion</b> + <b>-al</b> + <b>-ly</b>: <v>V</v> → <n>N</n> → <j>Adj</j> → <d>Adv</d>`]
+];
+const $=id=>document.getElementById(id);
+let deck=[],i=0,back=false,busy=false;const known=new Set(),act=new Set(Object.keys(S));
+const cards=D.map((c,id)=>({id,s:c[0],q:c[1],a:c[2]}));
+function build(){deck=cards.filter(c=>act.has(c.s));if(i>=deck.length)i=0;show()}
+function show(){const c=deck[i],col=S[c.s][1];back=false;
+$('card').style.setProperty('--c',col);document.body.style.setProperty('--c',col);
+$('lab').textContent='['+S[c.s][0];$('txt').className='txt q';$('txt').innerHTML=c.q;$('hint').textContent='tap to flip';
+$('cnt').textContent='Card '+(i+1)+' of '+deck.length;
+const k=deck.filter(x=>known.has(x.id)).length;$('kn').textContent=k+' known';$('pb').style.width=(k/deck.length*100)+'%'}
+function flip(){if(busy)return;busy=true;const el=$('card');el.classList.add('fl');
+setTimeout(()=>{const c=deck[i];back=!back;$('txt').className='txt'+(back?'':' q');$('txt').innerHTML=back?c.a:c.q;$('hint').textContent=back?'tap to flip back':'tap to flip';el.classList.remove('fl');busy=false},160)}
+function go(n){i=(i+n+deck.length)%deck.length;show()}
+function mark(v){const c=deck[i];v?known.add(c.id):known.delete(c.id);if(v&&deck.length>1)go(1);else show()}
+Object.entries(S).forEach(([k,[n,col]])=>{const b=document.createElement('button');b.className='chip on';b.textContent=n;b.style.setProperty('--c',col);
+b.onclick=()=>{if(act.has(k)){if(act.size>1)act.delete(k);else return}else act.add(k);b.classList.toggle('on',act.has(k));i=0;build()};$('chips').appendChild(b)});
+$('card').onclick=flip;
+$('card').onkeydown=e=>{if(e.key==' '||e.key=='Enter'){e.preventDefault();flip()}};
+document.onkeydown=e=>{if(e.key=='ArrowRight')go(1);if(e.key=='ArrowLeft')go(-1)};
+$('next').onclick=()=>go(1);$('prev').onclick=()=>go(-1);
+$('got').onclick=()=>mark(true);$('again').onclick=()=>mark(false);
+$('shuf').onclick=()=>{for(let a=deck.length-1;a>0;a--){const b=Math.floor(Math.random()*(a+1));[deck[a],deck[b]]=[deck[b],deck[a]]}i=0;show()};
+$('reset').onclick=()=>{known.clear();show()};
+build();
+</script>
+</body>
+</html>
