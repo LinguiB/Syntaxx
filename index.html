@@ -181,7 +181,7 @@ let view='home';
 function go(v,t){view=v;if(t){if(v=='study')stT=t;if(v=='cards'){cdT=t;i=0}if(v=='prac')pr=t}
 document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id=='v-'+v));
 document.querySelectorAll('nav.bot button').forEach(x=>x.classList.toggle('on',x.dataset.v==v));
-({home(){},study,cardsInit,prac})[v]();scrollTo(0,0)}
+({home(){},study,cards:cardsInit,prac})[v]();scrollTo(0,0)}
 STUCK.forEach(([t,v,k])=>{const b=document.createElement('button');b.className='go';b.style.setProperty('--c','#fbbf24');b.textContent=t;b.onclick=()=>go(v,k);$('stuck').appendChild(b)});
 function study(){tabs($('st-tabs'),topics,stT,k=>{stT=k;study();scrollTo(0,0)});
 const col=S[stT][1];let h='<h2 style="color:'+col+'">'+S[stT][0]+'</h2>';
