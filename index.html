@@ -10,15 +10,15 @@
 body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% 0,#2a2260 0,transparent 45%),radial-gradient(circle at 90% 100%,#0f3b4d 0,transparent 40%),var(--bg);color:var(--ink);font:17px/1.55 Georgia,'Times New Roman',serif;padding:18px 14px 40px}
 main{max-width:620px;margin:auto}
 h1{font-size:clamp(26px,7vw,38px);margin:4px 0 2px;letter-spacing:.2px}
-.tree{font:14px/1.7 ui-monospace,Menlo,monospace;color:var(--mut);background:#0d0b20;border:1px dashed #3b3580;border-radius:14px;padding:10px 12px;overflow-x:auto;white-space:nowrap;margin:10px 0}
+.tree{font:14px/1.7 ui-monospace,Menlo,monospace;color:var(--mut);background:#0d0b20;border:1px dashed #3b3580;border-radius:14px;padding:10px 12px;white-space:pre-wrap;word-break:break-word;margin:10px 0}
 .tree sub{font-size:11px;color:#8d86c9}
 n,v,j,d{font-weight:700;border-bottom:3px solid;padding:0 1px}
 n{color:var(--N)}v{color:var(--V)}j{color:var(--J)}d{color:var(--D)}
 .legend{display:flex;gap:8px;flex-wrap:wrap;font-size:14px;margin-bottom:12px}
 .legend span{background:var(--panel);border-radius:99px;padding:2px 12px}
-.chips{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
+.chips{display:flex;gap:7px;flex-wrap:wrap;position:sticky;top:0;z-index:5;background:var(--bg);margin:6px -14px 10px;padding:8px 14px;box-shadow:0 8px 12px -8px #000a}
 .chip{border:2px solid var(--c);background:transparent;color:var(--ink);border-radius:99px;padding:5px 13px;font:inherit;font-size:14px;cursor:pointer}
-.chip.on{background:var(--c);color:#12102a;font-weight:700}
+.chip.on{background:var(--c);color:#12102a;font-weight:700}.chip small{opacity:.7;margin-left:4px}
 .bar{height:8px;background:#0d0b20;border-radius:9px;overflow:hidden}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--N),var(--J),var(--D),var(--V));transition:width .4s}
 .meta{display:flex;justify-content:space-between;color:var(--mut);font-size:14px;margin:6px 2px 12px}
@@ -35,23 +35,58 @@ button.b:hover,.chip:hover{filter:brightness(1.25)}
 button.g{border-color:var(--J)}button.r{border-color:var(--V)}
 button:focus-visible,.card:focus-visible{outline:3px solid var(--D);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.card,.bar i{transition:none}}
+main{padding-bottom:96px}
+h2{font-size:22px;margin:18px 0 6px}
+.view{display:none}.view.on{display:block}
+nav.bot{position:fixed;bottom:0;left:0;right:0;display:flex;background:#0d0b20;border-top:2px solid #3b3580;z-index:9}
+nav.bot button{flex:1;background:none;border:0;color:var(--mut);font:inherit;font-size:13px;padding:7px 2px 9px;cursor:pointer}
+nav.bot button b{display:block;font-size:21px;font-weight:400}
+nav.bot button.on{color:var(--ink);box-shadow:inset 0 4px 0 var(--D)}
+.go{display:block;width:100%;text-align:left;margin:10px 0;padding:14px 16px;border-radius:18px;border:2px solid var(--c);background:var(--panel);color:var(--ink);font:inherit;font-size:15px;cursor:pointer}
+.go b{display:block;font-size:20px;color:var(--c)}
+.note{background:var(--panel);border-left:5px solid var(--c);border-radius:6px 16px 16px 6px;padding:12px 15px;margin:12px 0}
+.note h3{margin:0 0 6px;font-size:18px;color:var(--c)}
+.rules{border:2px dashed var(--c);border-radius:16px;padding:8px 16px;margin:18px 0}
+.rules h3{margin:4px 0;color:var(--c)}.rules ul{margin:4px 0;padding-left:20px}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border-radius:12px;border:2px solid #4b43a0;background:var(--panel);color:var(--ink);font:inherit;font-size:17px;cursor:pointer}
+.opt.ok{border-color:var(--J);background:#12392f}.opt.no{border-color:var(--V);background:#3d1626}
+details.ex{background:var(--panel);border-radius:14px;margin:8px 0;padding:10px 14px}
+details.ex summary{cursor:pointer;font-weight:700}details.ex p{margin:8px 0 0;color:var(--J)}
 </style>
 </head>
 <body>
 <main>
 <h1>Parts of Speech: Content Words</h1>
-<div class="tree" aria-label="Example syntax tree">[<sub>S</sub> [<sub>NP</sub> the <j>young</j> <n>girl</n>] [<sub>VP</sub> <v>loved</v> [<sub>NP</sub> the <j>old</j> <n>woman</n>]]] <d>quickly</d></div>
+<section class="view on" id="v-home">
+<div class="tree" aria-label="Example syntax tree">[<sub>S</sub> [<sub>NP</sub> the <j>young</j> <n>girl</n>]
+   [<sub>VP</sub> <v>loved</v> [<sub>NP</sub> the <j>old</j> <n>woman</n>]]]</div>
 <div class="legend"><span><n>N</n> noun</span><span><v>V</v> verb</span><span><j>Adj</j> adjective</span><span><d>Adv</d> adverb</span></div>
-<div class="chips" id="chips"></div>
+<h2>Where do you want to go?</h2>
+<button class="go" style="--c:#a78bfa" onclick="go('study')"><b>📖 Study: notes and rules</b>Read each topic with explanations, examples and rules to remember. Start here if you are confused.</button>
+<button class="go" style="--c:#34d399" onclick="go('cards')"><b>🃏 Flashcards: quick review</b>Flip short cards to memorize rules and examples before a test.</button>
+<button class="go" style="--c:#fb923c" onclick="go('prac')"><b>✏️ Practice: quiz me</b>Multiple-choice quiz and the class exercises, with answers.</button>
+<h2>I’m stuck on…</h2><div id="stuck"></div>
+</section>
+<section class="view" id="v-study"><div class="chips" id="st-tabs"></div><div id="st-body"></div></section>
+<section class="view" id="v-cards">
+<div class="chips" id="cd-tabs"></div>
 <div class="bar"><i id="pb"></i></div>
 <div class="meta"><span id="cnt"></span><span id="kn"></span></div>
 <div class="card" id="card" tabindex="0" role="button" aria-label="Flashcard. Press to flip."><span class="lab" id="lab"></span><div class="txt q" id="txt"></div><span class="hint" id="hint">tap to flip</span></div>
 <div class="row"><button class="b" id="prev">◀ Back</button><button class="b" id="shuf">Shuffle</button><button class="b" id="next">Next ▶</button></div>
 <div class="row"><button class="b r" id="again">Again</button><button class="b g" id="got">Got it</button></div>
 <div class="row"><button class="b" id="reset">Reset progress</button></div>
+</section>
+<section class="view" id="v-prac"><div class="chips" id="pr-tabs"></div><div id="pr-quiz"></div><div id="pr-ex"></div></section>
 </main>
+<nav class="bot" aria-label="Main sections">
+<button data-v="home" class="on" onclick="go('home')"><b>⌂</b>Start</button>
+<button data-v="study" onclick="go('study')"><b>📖</b>Study</button>
+<button data-v="cards" onclick="go('cards')"><b>🃏</b>Flashcards</button>
+<button data-v="prac" onclick="go('prac')"><b>✏️</b>Practice</button>
+</nav>
 <script>
-const S={b:['Basics','#a78bfa'],a:['Adjectives','#34d399'],f:['Forming','#fbbf24'],c:['Conversion','#f472b6'],v:['Adverbs','#60a5fa'],p:['Practice','#fb923c'],m:['Morphology','#2dd4bf']};
+const S={b:['Basics','#a78bfa'],a:['Adjectives','#34d399'],f:['Forming adjectives','#fbbf24'],c:['Word-class changes','#f472b6'],v:['Adverbs','#60a5fa'],m:['Morphology','#2dd4bf']};
 const D=[
 ['b',`What are <b>content words</b>?`,`Words that carry the main meaning: <n>N</n>ouns, <v>V</v>erbs, <j>Adj</j>ectives, <d>Adv</d>erbs.<br>Function words (the, in, and, he) mostly do grammar jobs.`],
 ['b',`The golden rule of word classes?`,`<b>Job beats form.</b> A word’s class depends on what it does in the sentence, not how it looks.<br><i>fast, hard, first</i> can be <j>Adj</j> or <d>Adv</d>.`],
@@ -77,14 +112,7 @@ const D=[
 ['v',`What can an adverb modify?`,`<v>Verb</v>: He ran <d>fast</d>.<br><j>Adjective</j>: I am <d>really</d> tired.<br><d>Adverb</d>: smoking <d>very</d> heavily.<br><b>Whole clause</b>: <d>Frankly</d>, I am tired.`],
 ['v',`Suffixes that form adverbs`,`<b>-ly</b> happily, carefully, quickly<br><b>-wise</b> clockwise, likewise<br><b>-ways</b> sideways, midway<br><b>-ward(s)</b> backward(s), forward(s)<br>Extra: <i>friendly, lovely</i> are adjectives, not adverbs.`],
 ['v',`Same form, different job: “fast”`,`<i>She is <b>fast</b>.</i> = <j>Adj</j> (describes <i>she</i>)<br><i>She runs <b>fast</b>.</i> = <d>Adv</d> (describes <i>runs</i>)`],
-['p',`Fill in with an adjective (1 to 3)`,`1. account → <b>accountable</b> (-able)<br>2. structure → <b>structureless</b> (-less)<br>3. stress → <b>stressful</b> (-ful). The slide note says only “stress”, probably a typo.`],
-['p',`Fill in with an adjective (4 to 7)`,`4. advantage → <b>advantageous</b><br>5. benefit → <b>beneficial</b><br>6. effect → <b>effective</b><br>7. represent → <b>representative</b>`],
-['p',`Cartoons: find the word`,`<i>Duck Soup</i>: <j>delicious</j> (adjective describing the soup).<br><i>Moon Food</i>: <d>recently</d> (adverb saying when Chuck ate).`],
-['p',`Find the adjectives: Red Riding Hood`,`<j>long</j> (a long way), <j>first</j> (the first house), <j>little</j> girl, <j>shorter</j>, <j>longer</j>.<br>Careful: “who gets there <b>first</b>” = <d>adverb</d>. <i>Hazel-nuts</i> is a compound noun.`],
-['p',`Find the adverbs: Red Riding Hood`,`<d>off, ever, so, far, away, over there, then, too, here, first, hard</d><br>“Yes” and “well” are usually interjections or discourse markers. Check how your instructor counts them.`],
-['p',`Tag: I work hard because I enjoy hard work.`,`I <v>work</v> <d>hard</d> because I <v>enjoy</v> <j>hard</j> <n>work</n>.`],
-['p',`Tag the content words: set 1`,`If it’s <j>urgent</j>, you should <v>send</v> it by <j>express</j> <n>mail</n>.<br>The <n>path</n> was so <j>narrow</j> we had to <v>walk</v> <d>sideways</d>.<br><d>Sometimes</d> we <v>get</v> a lot of <n>rain</n> in <n>September</n>.`],
-['p',`Tag the content words: set 2`,`You should <d>always</d> <v>speak</v> <d>naturally</d>.<br>You can <d>always</d> <v>judge</v> a <n>society</n> by the <n>way</n> <n>the old</n> are <v>cared for</v>.<br><n>Houses</n> are <d>very</d> <j>expensive</j> these <n>days</n>.<br>Linking and auxiliary verbs (<i>are, should, can</i>) are often counted as function words.`],
+['m',`How to break a word down`,`1. Find the <b>root</b>.<br>2. Add affixes one at a time, from the inside out.<br>3. After each one, note the class change.<br><i>institute → institution → institutional → institutionally</i><br>V → N → Adj → Adv`],
 ['m',`Break down: <b>optional</b>`,`Root <b>opt</b> + <b>-tion</b> (<v>V</v> → <n>N</n>) + <b>-al</b> (<n>N</n> → <j>Adj</j>)`],
 ['m',`Break down: <b>narrative</b>`,`Root <b>narrate</b> + <b>-ive</b>: <v>V</v> → <j>Adj</j>`],
 ['m',`Break down: <b>fruitfully</b>`,`Root <b>fruit</b> + <b>-ful</b> + <b>-ly</b>: <n>N</n> → <j>Adj</j> → <d>Adv</d>`],
@@ -93,29 +121,109 @@ const D=[
 ['m',`Break down: <b>downwards</b>`,`Root <b>down</b> + <b>-ward</b> + <b>-s</b>: ends as an <d>Adv</d>`],
 ['m',`Break down: <b>institutionally</b>`,`Root <b>institute</b> + <b>-tion</b> + <b>-al</b> + <b>-ly</b>: <v>V</v> → <n>N</n> → <j>Adj</j> → <d>Adv</d>`]
 ];
+const R={
+b:['Content words carry meaning: N, V, Adj, Adv.','Job beats form: check what the word does in <i>this</i> sentence.'],
+a:['Before a noun = attributive. After a linking verb = predicative.','If “very ___” works, it is gradable.','Short: -er / -est. Long: more / most. Irregular: memorize.'],
+f:['A suffix usually changes the class. A prefix keeps it.','im- before b/m/p, il- before l, ir- before r, in- otherwise.','-ful = full of, -less = without, -able = can be ___ed.'],
+c:['the + adjective = a group (<i>the young</i>).','-ing form: action now, or purpose?','-ed = the feeling, -ing = the cause. “Very” works only on adjectives.'],
+v:['Adverbs answer: how, where, when, how often, how much.','They can modify a verb, adjective, adverb or whole clause.','-ly is a clue, not proof: <i>friendly</i> is an adjective.','Same form? Ask what it modifies (<i>fast, hard, first</i>).'],
+m:['Find the root first, then add one affix at a time.','After each affix, write the new class (V → N → Adj → Adv).','Spelling can change: value → valuable (the -e drops).']};
+const QZ=[
+['b','In “She runs fast”, <i>fast</i> is…',['an adjective','an adverb','a noun','a verb'],1,'It tells how she runs, so it modifies a verb.'],
+['b','In “She is fast”, <i>fast</i> is…',['an adjective','an adverb','a noun','a verb'],0,'It describes <i>she</i> after a linking verb: a predicative adjective.'],
+['b','In “I work hard”, <i>hard</i> is…',['an adjective','an adverb'],1,'It tells how I work. In “hard work” it is an adjective.'],
+['a','Which adjective is non-gradable?',['happy','alive','tall','useful'],1,'Alive / dead are exact opposites with nothing in between.'],
+['a','The superlative of <i>useful</i> is…',['usefullest','more useful','the most useful','usefuller'],2,'Long adjectives take more / most.'],
+['a','“The children were asleep.” <i>Asleep</i> is…',['attributive','predicative'],1,'It comes after the verb <i>were</i>.'],
+['f','The suffix <i>-less</i> means…',['full of','without','can be done','relating to'],1,'Homeless = without a home.'],
+['f','Which negative prefix goes with <i>legal</i>?',['un-','im-','il-','ir-'],2,'il- before l.'],
+['f','Which word is an adjective, not an adverb?',['quickly','friendly','happily','carefully'],1,'Not every -ly word is an adverb.'],
+['c','In “difficult for the young to understand the old”, <i>the old</i> is…',['an adjective before a noun','a noun made from an adjective','a verb','an adverb'],1,'the + adjective = a group of people.'],
+['c','“He waved to the swimming children.” <i>Swimming</i> shows…',['an action the children do','a purpose, like swimming pool'],0,'The children are swimming.'],
+['c','In <i>frying pan</i>, <i>frying</i> shows…',['an action happening now','the purpose: a pan for frying'],1,'Purpose compound, like sewing machine.'],
+['c','“The story is boring.” The story…',['feels bored','causes boredom'],1,'-ing = cause. -ed = feeling.'],
+['c','In “a white and silver dress”, <i>silver</i> is…',['a noun','an adjective','a verb','an adverb'],1,'It describes the dress. In “made from silver” it is a noun.'],
+['v','In “Frankly, I am tired”, <i>frankly</i> modifies…',['the verb am','the adjective tired','the whole clause','a noun'],2,'A sentence adverb.'],
+['v','<i>Recently</i> is an adverb of…',['manner','place','time','degree'],2,'It answers “when?”'],
+['v','<i>Quite</i> in “quite good” is an adverb of…',['frequency','degree','time','manner'],1,'It answers “how much?”'],
+['m','The root of <i>institutionally</i> is…',['institution','institute','institutional','institut'],1,'institute + -tion + -al + -ly']];
+const EX=[
+['Fill in the adjective','Make an adjective from the word in brackets.',[
+['The politician is ____ to Parliament and the public. (account)','<b>accountable</b> (-able)'],
+['He’s an island of extreme structure in a ____ world. (structure)','<b>structureless</b> (-less)'],
+['I think I’ve got one of the most ____ jobs there is. (stress)','<b>stressful</b> (-ful)'],
+['He found it ____ to arrive early. (advantage)','<b>advantageous</b> (-ous)'],
+['He found it ____ to arrive early. (benefit)','<b>beneficial</b>'],
+['The conference aimed at proposing ____ solutions to environmental problems. (effect)','<b>effective</b> (-ive)'],
+['The new head of state should be chosen by an 87-member ____ council. (represent)','<b>representative</b> (-ive)']]],
+['Find the adjectives and adverbs','<i>‘Does she live a long way off?’ asked the Wolf. ‘Oh yes,’ said Little Red Riding-Hood, ‘it’s beyond the mill that you can see ever so far away over there, and it’s the first house you come to in the village.’ ‘Well then,’ said the Wolf, ‘I’d like to go and see her too. I’ll go by this path here, and you go by that one, and we’ll see who gets there first.’ The Wolf began to run as hard as he could along his path, which was shorter, while the little girl went by the longer path, and amused herself gathering hazel-nuts, running after butterflies, and making bouquets out of the flowers that she saw.</i>',[
+['Find the adjectives','<j>long</j>, <j>first</j> (the first house), <j>little</j>, <j>shorter</j>, <j>longer</j>. Careful: “gets there <b>first</b>” is an adverb.'],
+['Find the adverbs','<d>off, ever, so, far, away, over there, then, too, here, first, hard</d>. “Yes” and “well” are usually interjections or discourse markers.']]],
+['Tag the content words','Label each content word: N, V, Adj or Adv.',[
+['I work hard because I enjoy hard work.','I <v>work</v> <d>hard</d> because I <v>enjoy</v> <j>hard</j> <n>work</n>.'],
+['If it’s urgent, you should send it by express mail.','<j>urgent</j>, <v>send</v>, <j>express</j>, <n>mail</n>'],
+['The path was so narrow we had to walk sideways.','<n>path</n>, <j>narrow</j>, <v>walk</v>, <d>sideways</d>'],
+['Sometimes we get a lot of rain in September.','<d>Sometimes</d>, <v>get</v>, <n>rain</n>, <n>September</n>'],
+['You should always speak naturally.','<d>always</d>, <v>speak</v>, <d>naturally</d>'],
+['You can always judge a society by the way the old are cared for.','<d>always</d>, <v>judge</v>, <n>society</n>, <n>way</n>, <n>the old</n>, <v>cared for</v>'],
+['Houses are very expensive these days.','<n>Houses</n>, <d>very</d>, <j>expensive</j>, <n>days</n>. Linking and auxiliary verbs (<i>are</i>) are often counted as function words.']]],
+['Break down the word','Root, affixes, and the class change at each step.',[
+['optional','<b>opt</b> + -tion + -al: V → N → Adj'],['narrative','<b>narrate</b> + -ive: V → Adj'],['fruitfully','<b>fruit</b> + -ful + -ly: N → Adj → Adv'],
+['meaningful','<b>mean</b> + -ing + -ful: V → N → Adj'],['valuable','<b>value</b> + -able: N → Adj'],['downwards','<b>down</b> + -ward + -s: Adv'],
+['institutionally','<b>institute</b> + -tion + -al + -ly: V → N → Adj → Adv']]]];
+const STUCK=[['Telling adjectives from adverbs','study','v'],['Words that change class (the old, swimming pool, bored / boring)','study','c'],['Building adjectives with suffixes and prefixes','study','f'],['Breaking a word into root + affixes','study','m'],['A quick refresher before a test','cards','all'],['Testing myself','prac','quiz'],['Class exercises with answers','prac','ex']];
 const $=id=>document.getElementById(id);
-let deck=[],i=0,back=false,busy=false;const known=new Set(),act=new Set(Object.keys(S));
 const cards=D.map((c,id)=>({id,s:c[0],q:c[1],a:c[2]}));
-function build(){deck=cards.filter(c=>act.has(c.s));if(i>=deck.length)i=0;show()}
+const topics=Object.entries(S).map(([k,[n,c]])=>[k,n,c]);
+let stT='b',cdT='all',pr='quiz';
+function tabs(el,items,cur,pick){el.innerHTML='';items.forEach(([k,n,col])=>{const b=document.createElement('button');b.className='chip'+(k==cur?' on':'');b.style.setProperty('--c',col);b.textContent=n;b.onclick=()=>pick(k);el.appendChild(b)})}
+let view='home';
+function go(v,t){view=v;if(t){if(v=='study')stT=t;if(v=='cards'){cdT=t;i=0}if(v=='prac')pr=t}
+document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id=='v-'+v));
+document.querySelectorAll('nav.bot button').forEach(x=>x.classList.toggle('on',x.dataset.v==v));
+({home(){},study,cardsInit,prac})[v]();scrollTo(0,0)}
+STUCK.forEach(([t,v,k])=>{const b=document.createElement('button');b.className='go';b.style.setProperty('--c','#fbbf24');b.textContent=t;b.onclick=()=>go(v,k);$('stuck').appendChild(b)});
+function study(){tabs($('st-tabs'),topics,stT,k=>{stT=k;study();scrollTo(0,0)});
+const col=S[stT][1];let h='<h2 style="color:'+col+'">'+S[stT][0]+'</h2>';
+cards.filter(c=>c.s==stT).forEach(c=>h+='<div class="note" style="--c:'+col+'"><h3>'+c.q+'</h3>'+c.a+'</div>');
+h+='<div class="rules" style="--c:'+col+'"><h3>Rules to remember</h3><ul>'+R[stT].map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+h+='<div class="row"><button class="b" onclick="go(\'cards\',stT)">Flashcards</button><button class="b" onclick="go(\'prac\',\'quiz\')">Quiz me</button></div>';
+$('st-body').innerHTML=h}
+let deck=[],i=0,back=false,busy=false;const known=new Set();
+function cardsInit(){tabs($('cd-tabs'),[['all','All','#e9e4ff'],...topics],cdT,k=>{cdT=k;i=0;cardsInit()});build()}
+function build(){deck=cards.filter(c=>cdT=='all'||c.s==cdT);if(i>=deck.length)i=0;show()}
 function show(){const c=deck[i],col=S[c.s][1];back=false;
-$('card').style.setProperty('--c',col);document.body.style.setProperty('--c',col);
+$('card').style.setProperty('--c',col);
 $('lab').textContent='['+S[c.s][0];$('txt').className='txt q';$('txt').innerHTML=c.q;$('hint').textContent='tap to flip';
 $('cnt').textContent='Card '+(i+1)+' of '+deck.length;
 const k=deck.filter(x=>known.has(x.id)).length;$('kn').textContent=k+' known';$('pb').style.width=(k/deck.length*100)+'%'}
 function flip(){if(busy)return;busy=true;const el=$('card');el.classList.add('fl');
 setTimeout(()=>{const c=deck[i];back=!back;$('txt').className='txt'+(back?'':' q');$('txt').innerHTML=back?c.a:c.q;$('hint').textContent=back?'tap to flip back':'tap to flip';el.classList.remove('fl');busy=false},160)}
-function go(n){i=(i+n+deck.length)%deck.length;show()}
-function mark(v){const c=deck[i];v?known.add(c.id):known.delete(c.id);if(v&&deck.length>1)go(1);else show()}
-Object.entries(S).forEach(([k,[n,col]])=>{const b=document.createElement('button');b.className='chip on';b.textContent=n;b.style.setProperty('--c',col);
-b.onclick=()=>{if(act.has(k)){if(act.size>1)act.delete(k);else return}else act.add(k);b.classList.toggle('on',act.has(k));i=0;build()};$('chips').appendChild(b)});
+function step(n){i=(i+n+deck.length)%deck.length;show()}
+function mark(v){const c=deck[i];v?known.add(c.id):known.delete(c.id);if(v&&deck.length>1)step(1);else show()}
 $('card').onclick=flip;
 $('card').onkeydown=e=>{if(e.key==' '||e.key=='Enter'){e.preventDefault();flip()}};
-document.onkeydown=e=>{if(e.key=='ArrowRight')go(1);if(e.key=='ArrowLeft')go(-1)};
-$('next').onclick=()=>go(1);$('prev').onclick=()=>go(-1);
+document.onkeydown=e=>{if(view!='cards')return;if(e.key=='ArrowRight')step(1);if(e.key=='ArrowLeft')step(-1)};
+$('next').onclick=()=>step(1);$('prev').onclick=()=>step(-1);
 $('got').onclick=()=>mark(true);$('again').onclick=()=>mark(false);
 $('shuf').onclick=()=>{for(let a=deck.length-1;a>0;a--){const b=Math.floor(Math.random()*(a+1));[deck[a],deck[b]]=[deck[b],deck[a]]}i=0;show()};
 $('reset').onclick=()=>{known.clear();show()};
-build();
+let qs=[],qi=0,sc=0,miss=new Set();
+function prac(){tabs($('pr-tabs'),[['quiz','Quiz me','#fb923c'],['ex','Class exercises','#2dd4bf']],pr,k=>{pr=k;prac()});
+$('pr-quiz').style.display=pr=='quiz'?'block':'none';$('pr-ex').style.display=pr=='ex'?'block':'none';
+if(pr=='quiz'&&!qs.length)startQ();if(pr=='ex'&&!$('pr-ex').innerHTML)ex()}
+function startQ(){qs=QZ.slice().sort(()=>Math.random()-.5);qi=0;sc=0;miss=new Set();drawQ()}
+function drawQ(){const el=$('pr-quiz');
+if(qi>=qs.length){let h='<h2>Score: '+sc+' / '+qs.length+'</h2>';
+if(miss.size){h+='<p>Review these topics:</p>';miss.forEach(k=>h+='<button class="go" style="--c:'+S[k][1]+'" onclick="go(\'study\',\''+k+'\')"><b>'+S[k][0]+'</b>Open the notes</button>')}else h+='<p>No mistakes. Try the class exercises next.</p>';
+el.innerHTML=h+'<div class="row"><button class="b" onclick="startQ()">Try again</button><button class="b" onclick="go(\'prac\',\'ex\')">Class exercises</button></div>';return}
+const [t,q,o,a,w]=qs[qi];
+el.innerHTML='<div class="meta"><span>Question '+(qi+1)+' of '+qs.length+'</span><span>Correct: '+sc+'</span></div><div class="note" style="--c:'+S[t][1]+'"><h3>'+q+'</h3></div>'+o.map((x,n)=>'<button class="opt" data-n="'+n+'">'+x+'</button>').join('')+'<div id="fb"></div>';
+el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const n=+b.dataset.n;
+el.querySelectorAll('.opt').forEach((x,m)=>{x.disabled=true;if(m==a)x.classList.add('ok')});
+if(n==a)sc++;else{b.classList.add('no');miss.add(t)}
+$('fb').innerHTML='<div class="note" style="--c:'+(n==a?'#34d399':'#fb7185')+'"><h3>'+(n==a?'Correct':'Not quite')+'</h3>'+w+'</div><button class="b" style="width:100%" onclick="qi++;drawQ()">Next question</button>'})}
+function ex(){let h='';EX.forEach(([t,intro,items])=>{h+='<h2>'+t+'</h2><div class="note" style="--c:#2dd4bf">'+intro+'</div>';items.forEach(([p,a])=>h+='<details class="ex"><summary>'+p+'</summary><p>'+a+'</p></details>')});$('pr-ex').innerHTML=h}
 </script>
 </body>
 </html>
